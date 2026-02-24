@@ -1,0 +1,33 @@
+def first_recurring_char(text):
+    """
+    Mencari karakter pertama yang muncul lebih dari sekali
+    
+    Args:
+        text: String yang akan diperiksa
+    
+    Returns:
+        Karakter pertama yang berulang, atau None jika tidak ada
+    """
+    seen = set()
+    
+    for char in text:
+        if char in seen:
+            return char     # Karakter pertama yang berulang ditemukan
+        seen.add(char)
+    
+    return None     # Tidak ada karakter yang berulang
+
+# Contoh Soal 4
+print("=" * 60)
+print("SOAL 4: FIRST RECURRING CHARACTER")
+print("=" * 60)
+string_a = "ABCDA"
+string_b = "ABCA"
+string_c = "ABCDEF"
+string_d = "PEMROGRAMAN"
+
+print(f"'{string_a}' -> karakter pertama berulang: '{first_recurring_char(string_a)}'")
+print(f"'{string_b}' -> karakter pertama berulang: '{first_recurring_char(string_b)}'")
+print(f"'{string_c}' -> karakter pertama berulang: {first_recurring_char(string_c)}")
+print(f"'{string_d}' -> karakter pertama berulang: '{first_recurring_char(string_d)}'")
+print()
