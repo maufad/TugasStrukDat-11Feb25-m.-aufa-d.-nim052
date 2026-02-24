@@ -1,0 +1,236 @@
+class BukuTelepon:
+    """Simulasi buku telepon sederhana"""
+    
+    def __init__(self):
+        self.kontak = {}      # Dictionary untuk menyimpan nama -> nomor
+    
+    def tambah_kontak(self):
+        """Menu 1: Tambah kontak baru"""
+        print("\n" + "-" * 40)
+        print("TAMBAH KONTAK BARU")
+        print("-" * 40)
+        
+        nama = input("Masukkan nama kontak: ").strip()
+        nomor = input("Masukkan nomor telepon: ").strip()
+        
+        # Validasi input
+        if not nama or not nomor:
+            print("❌ ERROR: Nama dan nomor tidak boleh kosong!")
+            return
+        
+        # Cek apakah nama sudah ada
+        if nama in self.kontak:
+            print(f"⚠️  Peringatan: Kontak '{nama}' sudah ada!")
+            timpa = input("Apakah ingin menimpa? (y/n): ").lower()
+            if timpa != 'y':
+                print("❌ Penambahan dibatalkan.")
+                return
+        
+        # Simpan kontak
+        self.kontak[nama] = nomor
+        print(f"✅ Kontak '{nama}' berhasil ditambahkan/diperbarui!")
+    
+    def cari_kontak(self):
+        """Menu 2: Cari kontak berdasarkan nama"""
+        print("\n" + "-" * 40)
+        print("CARI KONTAK")
+        print("-" * 40)
+        
+        if not self.kontak:
+            print("📭 Buku telepon masih kosong!")
+            return
+        
+        keyword = input("Masukkan nama yang dicari: ").strip().lower()
+        
+        if not keyword:
+            print("❌ Keyword pencarian tidak boleh kosong!")
+            return
+        
+        # Cari kontak yang mengandung keyword
+        hasil = {}
+        for nama, nomor in self.kontak.items():
+            if keyword in nama.lower():
+                hasil[nama] = nomor
+        
+        # Tampilkan hasil
+        if hasil:
+            print(f"\n🔍 Ditemukan {len(hasil)} kontak:")
+            for i, (nama, nomor) in enumerate(sorted(hasil.items()), 1):
+                print(f"   {i}. {nama}: {nomor}")
+        else:
+            print(f"❌ Tidak ditemukan kontak dengan nama mengandung '{keyword}'")
+    
+    def tampilkan_semua(self):
+        """Menu 3: Tampilkan semua kontak"""
+        print("\n" + "-" * 40)
+        print("DAFTAR SEMUA KONTAK")
+        print("-" * 40)
+        
+        if not self.kontak:
+            print("📭 Buku telepon kosong!")
+            return
+        
+        # Urutkan berdasarkan nama
+        print(f"Total kontak: {len(self.kontak)}")
+        print()
+        for i, (nama, nomor) in enumerate(sorted(self.kontak.items()), 1):
+            print(f"{i:2d}. {nama:20s} : {nomor}")
+    
+    def jalankan(self):
+        """Menjalankan program buku telepon dengan menu interaktif"""
+        while True:
+            print("\n" + "=" * 50)
+            print("      📞 SIMULASI BUKU TELEPON")
+            print("=" * 50)
+            print("1. 📝 Tambah Kontak")
+            print("2. 🔍 Cari Kontak")
+            print("3. 📋 Tampilkan Semua Kontak")
+            print("4. ❌ Keluar")
+            print("-" * 50)
+            
+            pilihan = input("Pilih menu (1-4): ").strip()
+            
+            if pilihan == '1':
+                self.tambah_kontak()
+            
+            elif pilihan == '2':
+                self.cari_kontak()
+            
+            elif pilihan == '3':
+                self.tampilkan_semua()
+            
+            elif pilihan == '4':
+                print("\n👋 Terima kasih telah menggunakan Buku Telepon!")
+                break
+            
+            else:
+                print("❌ Pilihan tidak valid! Masukkan angka 1-4.")
+
+
+# ============================================
+# PROGRAM UTAMA
+# ============================================
+if __name__ == "__main__":
+    print("\n" + "=" * 60)
+    print("           PROGRAM LATIHAN SOAL 1-5")
+    print("=" * 60)
+    
+    while True:
+        print("\nPILIH SOAL YANG AKAN DIJALANKAN:")
+        print("1. Deduplikasi List")
+        print("2. Intersection Dua Array")
+        print("3. Anagram Check")
+        print("4. First Recurring Character")
+        print("5. Simulasi Buku Telepon")
+        print("6. Jalankan SEMUA Soal (Demo)")
+        print("7. Keluar")
+        print("-" * 40)
+        
+        pilihan = input("Masukkan pilihan (1-7): ").strip()
+        
+        if pilihan == '1':
+            print("\n" + "=" * 60)
+            print("SOAL 1: DEDUPLIKASI")
+            print("=" * 60)
+            # Input dari user
+            input_str = input("Masukkan list angka (pisahkan dengan koma): ")
+            try:
+                list_input = [int(x.strip()) for x in input_str.split(',')]
+                print(f"Hasil: {deduplikasi(list_input)}")
+            except:
+                print("❌ Format input salah! Gunakan format: 1,2,3,4")
+        
+        elif pilihan == '2':
+            print("\n" + "=" * 60)
+            print("SOAL 2: INTERSECTION DUA ARRAY")
+            print("=" * 60)
+            # Input dari user
+            input1 = input("Masukkan list pertama (pisahkan dengan koma): ")
+            input2 = input("Masukkan list kedua (pisahkan dengan koma): ")
+            try:
+                list1 = [int(x.strip()) for x in input1.split(',')]
+                list2 = [int(x.strip()) for x in input2.split(',')]
+                print(f"Elemen yang muncul di kedua list: {intersection(list1, list2)}")
+            except:
+                print("❌ Format input salah!")
+        
+        elif pilihan == '3':
+            print("\n" + "=" * 60)
+            print("SOAL 3: ANAGRAM CHECK")
+            print("=" * 60)
+            str1 = input("Masukkan string pertama: ").strip()
+            str2 = input("Masukkan string kedua: ").strip()
+            if anagram_check(str1, str2):
+                print(f"✅ '{str1}' dan '{str2}' adalah ANAGRAM")
+            else:
+                print(f"❌ '{str1}' dan '{str2}' BUKAN anagram")
+        
+        elif pilihan == '4':
+            print("\n" + "=" * 60)
+            print("SOAL 4: FIRST RECURRING CHARACTER")
+            print("=" * 60)
+            text = input("Masukkan string: ").strip()
+            hasil = first_recurring_char(text)
+            if hasil:
+                print(f"Karakter pertama yang berulang: '{hasil}'")
+            else:
+                print("Tidak ada karakter yang berulang")
+        
+        elif pilihan == '5':
+            print("\n" + "=" * 60)
+            print("SOAL 5: SIMULASI BUKU TELEPON")
+            print("=" * 60)
+            buku = BukuTelepon()
+            buku.jalankan()
+        
+        elif pilihan == '6':
+            # Demo semua soal
+            print("\n" + "=" * 60)
+            print("DEMO SEMUA SOAL")
+            print("=" * 60)
+            
+            print("\n📌 SOAL 1: Deduplikasi")
+            demo = [1, 2, 2, 3, 4, 4, 5, 1, 6]
+            print(f"   Input : {demo}")
+            print(f"   Output: {deduplikasi(demo)}")
+            
+            print("\n📌 SOAL 2: Intersection")
+            x = [1, 2, 3, 4, 5]
+            y = [4, 5, 6, 7, 8]
+            print(f"   {x} ∩ {y} = {intersection(x, y)}")
+            
+            print("\n📌 SOAL 3: Anagram")
+            print(f"   'listen' vs 'silent' : {anagram_check('listen', 'silent')}")
+            print(f"   'hello' vs 'world'   : {anagram_check('hello', 'world')}")
+            
+            print("\n📌 SOAL 4: First Recurring")
+            print(f"   'ABCDA'     : '{first_recurring_char('ABCDA')}'")
+            print(f"   'PROGRAMMER': '{first_recurring_char('PROGRAMMER')}'")
+            
+            print("\n📌 SOAL 5: Buku Telepon (Demo Singkat)")
+            buku_demo = BukuTelepon()
+            buku_demo.kontak = {
+                "Andi Pratama": "081234567890",
+                "Budi Santoso": "082345678901", 
+                "Citra Dewi": "083456789012",
+                "Dian Kurniawan": "084567890123"
+            }
+            buku_demo.tampilkan_semua()
+            
+            print("\n🔍 Demo Pencarian 'an':")
+            # Simulasi pencarian
+            hasil_cari = {n: no for n, no in buku_demo.kontak.items() if 'an' in n.lower()}
+            for i, (nama, nomor) in enumerate(hasil_cari.items(), 1):
+                print(f"   {i}. {nama}: {nomor}")
+            
+            input("\nTekan Enter untuk kembali ke menu...")
+        
+        elif pilihan == '7':
+            print("\n👋 Terima kasih! Program selesai.")
+            break
+        
+        else:
+            print("❌ Pilihan tidak valid! Masukkan 1-7.")
+        
+        if pilihan not in ['5', '7']:  # 5 adalah buku telepon yang sudah ada loop sendiri
+            input("\nTekan Enter untuk kembali ke menu...")
