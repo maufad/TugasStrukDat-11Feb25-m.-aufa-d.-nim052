@@ -1,0 +1,37 @@
+def anagram_check(str1, str2):
+    """
+    Mengecek apakah dua string adalah anagram
+    
+    Args:
+        str1, str2: Dua string yang akan dicek
+    
+    Returns:
+        Boolean: True jika anagram, False jika bukan
+    """
+    
+    # Fungsi untuk menghitung frekuensi karakter menggunakan dictionary
+    def hitung_frekuensi(s):
+        freq = {}
+        # Ubah ke huruf kecil dan hilangkan spasi
+        for char in s.lower():
+            if char != ' ':  # Abaikan spasi
+                freq[char] = freq.get(char, 0) + 1
+        return freq
+    
+    # Bandingkan dictionary frekuensi
+    return hitung_frekuensi(str1) == hitung_frekuensi(str2)
+
+# Contoh Soal 3
+print("=" * 60)
+print("SOAL 3: ANAGRAM CHECK")
+print("=" * 60)
+kata_a = "listen" 
+kata_b = "silent"
+kata_c = "hello"
+kata_d = "world"
+print(f"'{kata_a}' dan '{kata_b}' : {anagram_check(kata_a, kata_b)}")
+print(f"'{kata_c}' dan '{kata_d}' : {anagram_check(kata_c, kata_d)}")
+
+# Contoh dengan spasi
+print(f"'the eyes' dan 'they see' : {anagram_check('the eyes', 'they see')}")
+print()
