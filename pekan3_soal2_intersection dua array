@@ -1,0 +1,28 @@
+def intersection(list1, list2):
+    """
+    Mencari elemen yang muncul di kedua list
+    
+    Args:
+        list1, list2: Dua list yang akan dicari irisannya
+    
+    Returns:
+        List berisi elemen yang ada di kedua list
+    """
+    set1 = set(list1)
+    set2 = set(list2)
+    
+    # Cari irisan menggunakan operator &
+    result = list(set1 & set2)
+    
+    return result
+
+# Contoh Soal 2
+print("=" * 60)
+print("SOAL 2: INTERSECTION DUA ARRAY")
+print("=" * 60)
+array_a = [1, 2, 3, 4, 5, 6]
+array_b = [4, 5, 6, 7, 8, 9]
+print(f"Array A: {array_a}")
+print(f"Array B: {array_b}")
+print(f"Irisan  : {intersection(array_a, array_b)}")
+print()
