@@ -1,0 +1,28 @@
+  def deduplikasi(lst):
+    """
+    Menghapus duplikat dari list, mempertahankan urutan kemunculan pertama
+    
+    Args:
+        lst: List input yang mungkin mengandung duplikat
+    
+    Returns:
+        List baru tanpa duplikat
+    """
+    seen = set()      # Untuk melacak elemen yang sudah dilihat
+    result = []       # Menyimpan hasil dengan urutan asli
+    
+    for item in lst:
+        if item not in seen:    # Jika belum pernah muncul
+            seen.add(item)       # Tandai sudah dilihat
+            result.append(item)  # Simpan ke hasil
+    
+    return result
+
+# Contoh Soal 1
+print("=" * 60)
+print("SOAL 1: DEDUPLIKASI")
+print("=" * 60)
+data1 = [2, 3, 4, 2, 5, 6, 3, 7, 8, 5]
+print(f"List awal    : {data1}")
+print(f"Setelah dedup: {deduplikasi(data1)}")
+print()
