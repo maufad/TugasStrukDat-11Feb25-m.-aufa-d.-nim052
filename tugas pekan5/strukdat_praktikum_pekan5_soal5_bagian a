@@ -1,0 +1,152 @@
+import random
+import time
+
+def countInversionsNaive(arr):
+    """
+    Brute force O(n²) - cek semua pasangan (i, j)
+    """
+    n = len(arr)
+    count = 0
+    
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            if arr[i] > arr[j]:
+                count += 1
+    
+    return count
+
+def mergeAndCount(arr, temp_arr, left, mid, right):
+    """
+    Merge dua subarray dan hitung inversions
+    Mengembalikan jumlah inversions yang terjadi saat merge
+    """
+    i = left    # Pointer untuk subarray kiri
+    j = mid + 1 # Pointer untuk subarray kanan
+    k = left    # Pointer untuk array sementara
+    inv_count = 0
+    
+    while i <= mid and j <= right:
+        if arr[i] <= arr[j]:
+            temp_arr[k] = arr[i]
+            i += 1
+        else:
+            # Jika arr[i] > arr[j], maka semua elemen dari i..mid > arr[j]
+            # Karena subarray kiri dan kanan sudah terurut
+            temp_arr[k] = arr[j]
+            inv_count += (mid - i + 1)
+            j += 1
+        k += 1
+    
+    # Salin sisa elemen dari subarray kiri
+    while i <= mid:
+        temp_arr[k] = arr[i]
+        i += 1
+        k += 1
+    
+    # Salin sisa elemen dari subarray kanan
+    while j <= right:
+        temp_arr[k] = arr[j]
+        j += 1
+        k += 1
+    
+    # Salin kembali ke array asli
+    for i in range(left, right + 1):
+        arr[i] = temp_arr[i]
+    
+    return inv_count
+
+def mergeSortAndCount(arr, temp_arr, left, right):
+    """
+    Merge sort yang menghitung inversions
+    """
+    inv_count = 0
+    
+    if left < right:
+        mid = (left + right) // 2
+        
+        # Hitung inversions di subarray kiri
+        inv_count += mergeSortAndCount(arr, temp_arr, left, mid)
+        
+        # Hitung inversions di subarray kanan
+        inv_count += mergeSortAndCount(arr, temp_arr, mid + 1, right)
+        
+        # Hitung inversions saat merge
+        inv_count += mergeAndCount(arr, temp_arr, left, mid, right)
+    
+    return inv_count
+
+def countInversionsSmart(arr):
+    """
+    Menghitung inversions menggunakan merge sort O(n log n)
+    """
+    temp_arr = [0] * len(arr)
+    arr_copy = arr.copy()  # Agar tidak mengubah array asli
+    return mergeSortAndCount(arr_copy, temp_arr, 0, len(arr) - 1)
+
+def testInversionCounter():
+    """
+    Uji kedua fungsi dengan beberapa kasus
+    """
+    test_cases = [
+        [1, 2, 3, 4, 5],           # 0 inversions (terurut)
+        [5, 4, 3, 2, 1],           # 10 inversions (terbalik)
+        [2, 3, 8, 6, 1],           # 5 inversions (contoh)
+        [1, 20, 6, 4, 5],           # 5 inversions? (cek: 20>6,20>4,20>5,6>4,6>5 → 5)
+        [1, 1, 1, 1, 1],            # 0 inversions (sama semua)
+        [3, 1, 2]                    # 2 inversions (3>1,3>2)
+    ]
+    
+    print("=" * 60)
+    print(f"{'Test Case':<30} {'Naive':<10} {'Smart':<10} {'Sama?':<10}")
+    print("=" * 60)
+    
+    for case in test_cases:
+        naive = countInversionsNaive(case)
+        smart = countInversionsSmart(case)
+        sama = "✓" if naive == smart else "✗"
+        print(f"{str(case):<30} {naive:<10} {smart:<10} {sama:<10}")
+    
+    print("=" * 60)
+
+# Jalankan tes
+testInversionCounter()
+
+
+def benchmarkInversionCounters():
+    """
+    Membandingkan waktu eksekusi naive vs smart
+    """
+    sizes = [1000, 5000, 10000]
+    
+    print("\n" + "=" * 80)
+    print("BENCHMARK INVERSION COUNTER")
+    print("=" * 80)
+    print(f"{'Ukuran':<15} {'Naive (detik)':<20} {'Smart (detik)':<20} {'Percepatan':<15}")
+    print("=" * 80)
+    
+    for size in sizes:
+        # Generate array random
+        arr = [random.randint(1, 1000) for _ in range(size)]
+        
+        # Ukur naive
+        start = time.time()
+        naive_count = countInversionsNaive(arr)
+        naive_time = time.time() - start
+        
+        # Ukur smart
+        start = time.time()
+        smart_count = countInversionsSmart(arr)
+        smart_time = time.time() - start
+        
+        # Verifikasi hasil sama
+        assert naive_count == smart_count, "Hasil berbeda!"
+        
+        # Hitung percepatan
+        speedup = naive_time / smart_time if smart_time > 0 else 0
+        
+        print(f"{size:<15} {naive_time:<20.6f} {smart_time:<20.6f} {speedup:<15.2f}x")
+    
+    print("=" * 80)
+
+# Jalankan benchmark
+benchmarkInversionCounters()
