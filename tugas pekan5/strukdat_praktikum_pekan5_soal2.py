@@ -1,0 +1,41 @@
+def bubbleSortWithAnalysis(arr):
+    n = len(arr)
+    total_comparisons = 0
+    total_swaps = 0
+    passes_used = 0
+    
+    # Salin array agar tidak mengubah array asli
+    sorted_list = arr.copy()
+    
+    for i in range(n - 1):
+        swapped = False
+        passes_used += 1
+        
+        # Bandingkan elemen berpasangan
+        for j in range(n - 1 - i):
+            total_comparisons += 1
+            
+            if sorted_list[j] > sorted_list[j + 1]:
+                # Swap
+                sorted_list[j], sorted_list[j + 1] = sorted_list[j + 1], sorted_list[j]
+                total_swaps += 1
+                swapped = True
+        
+        # Cetak state setelah pass
+        print(f"Pass {passes_used}: {sorted_list}")
+        
+        # Early termination: jika tidak ada swap, array sudah terurut
+        if not swapped:
+            break
+    
+    return (sorted_list, total_comparisons, total_swaps, passes_used)
+
+# Uji dengan kasus 1: [5, 1, 4, 2, 8]
+print("=== Kasus 1: [5, 1, 4, 2, 8] ===")
+result1 = bubbleSortWithAnalysis([5, 1, 4, 2, 8])
+print(f"Hasil: sorted={result1[0]}, comparisons={result1[1]}, swaps={result1[2]}, passes={result1[3]}\n")
+
+# Uji dengan kasus 2: [1, 2, 3, 4, 5]
+print("=== Kasus 2: [1, 2, 3, 4, 5] ===")
+result2 = bubbleSortWithAnalysis([1, 2, 3, 4, 5])
+print(f"Hasil: sorted={result2[0]}, comparisons={result2[1]}, swaps={result2[2]}, passes={result2[3]}")
