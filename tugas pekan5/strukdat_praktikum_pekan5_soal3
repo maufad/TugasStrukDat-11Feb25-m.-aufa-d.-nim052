@@ -1,0 +1,110 @@
+import random
+import time
+
+def insertionSortWithCount(arr):
+    """Insertion sort yang mengembalikan (sorted_arr, total_operations)"""
+    comparisons = 0
+    swaps = 0
+    arr = arr.copy()
+    
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        
+        # Bandingkan dan geser elemen
+        while j >= 0:
+            comparisons += 1
+            if arr[j] > key:
+                arr[j + 1] = arr[j]
+                swaps += 1
+                j -= 1
+            else:
+                break
+        
+        arr[j + 1] = key
+        if j + 1 != i:  # Jika terjadi pergeseran
+            swaps += 1  # Penempatan key di posisi baru
+    
+    return arr, comparisons + swaps
+
+def selectionSortWithCount(arr):
+    """Selection sort yang mengembalikan (sorted_arr, total_operations)"""
+    comparisons = 0
+    swaps = 0
+    arr = arr.copy()
+    n = len(arr)
+    
+    for i in range(n - 1):
+        min_idx = i
+        for j in range(i + 1, n):
+            comparisons += 1
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        
+        if min_idx != i:
+            arr[i], arr[min_idx] = arr[min_idx], arr[i]
+            swaps += 1
+    
+    return arr, comparisons + swaps
+
+def hybridSortWithCount(arr, threshold=10):
+    """Hybrid sort: insertion jika ≤ threshold, selection jika > threshold"""
+    comparisons = 0
+    swaps = 0
+    arr = arr.copy()
+    n = len(arr)
+    
+    if n <= threshold:
+        # Pakai insertion sort
+        sorted_arr, ops = insertionSortWithCount(arr)
+        return sorted_arr, ops
+    else:
+        # Pakai selection sort
+        sorted_arr, ops = selectionSortWithCount(arr)
+        return sorted_arr, ops
+
+def generateRandomArray(size):
+    """Membuat array random dengan ukuran tertentu"""
+    return [random.randint(1, 1000) for _ in range(size)]
+
+def runExperiment():
+    """Menjalankan eksperimen perbandingan"""
+    sizes = [50, 100, 500]
+    results = {
+        'size': [],
+        'hybrid': [],
+        'insertion': [],
+        'selection': []
+    }
+    
+    print("=" * 70)
+    print(f"{'Ukuran':<10} {'Hybrid Sort':<15} {'Insertion Sort':<18} {'Selection Sort':<15}")
+    print("=" * 70)
+    
+    for size in sizes:
+        # Generate array random
+        original = generateRandomArray(size)
+        
+        # Hybrid Sort
+        _, hybrid_ops = hybridSortWithCount(original)
+        
+        # Pure Insertion Sort
+        _, insertion_ops = insertionSortWithCount(original)
+        
+        # Pure Selection Sort
+        _, selection_ops = selectionSortWithCount(original)
+        
+        # Simpan hasil
+        results['size'].append(size)
+        results['hybrid'].append(hybrid_ops)
+        results['insertion'].append(insertion_ops)
+        results['selection'].append(selection_ops)
+        
+        # Tampilkan dalam tabel
+        print(f"{size:<10} {hybrid_ops:<15} {insertion_ops:<18} {selection_ops:<15}")
+    
+    print("=" * 70)
+    return results
+
+# Jalankan eksperimen
+results = runExperiment()
